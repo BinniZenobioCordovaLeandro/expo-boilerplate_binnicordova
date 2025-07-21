@@ -1,12 +1,12 @@
-import {styles} from "@/styles";
-import {theme} from "@/theme/colors";
 import {useFonts} from "expo-font";
 import {Slot} from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import {StatusBar} from "expo-status-bar";
+import {Provider} from "jotai";
 import {useEffect} from "react";
 import {View} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
+import {styles} from "@/styles";
+import {theme} from "@/theme/colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,25 +18,26 @@ const FONT_SETTINGS = {
 };
 
 const RootLayout = () => {
-    const COLORS = theme();
-
-    const [loaded] = useFonts(FONT_SETTINGS);
+    const {background} = theme();
+    const [fontsLoaded, fontError] = useFonts(FONT_SETTINGS);
 
     useEffect(() => {
-        if (loaded) SplashScreen.hideAsync();
-    }, [loaded]);
+        if (fontsLoaded || fontError) {
+            SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded, fontError]);
 
-    if (!loaded) {
+    if (!fontsLoaded) {
         return null;
     }
 
     return (
-        <View style={[styles.baseLayer, {backgroundColor: COLORS.background}]}>
-            <StatusBar style="auto" />
-            <SafeAreaView style={styles.baseLayer}>
+        <Provider>
+            <View style={[styles.baseLayer, {backgroundColor: background}]}>
+                <StatusBar style="auto" />
                 <Slot />
-            </SafeAreaView>
-        </View>
+            </View>
+        </Provider>
     );
 };
 

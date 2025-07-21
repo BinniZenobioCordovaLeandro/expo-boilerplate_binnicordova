@@ -1,10 +1,10 @@
+import {useLocalSearchParams} from "expo-router";
+import {View} from "react-native";
+import {WebView} from "react-native-webview";
 import {AppBar} from "@/components/AppBar/AppBar";
 import {Text} from "@/components/Text/Text";
 import {STRINGS} from "@/constants/strings";
 import {styles} from "@/styles";
-import {useLocalSearchParams} from "expo-router";
-import {View} from "react-native";
-import {WebView} from "react-native-webview";
 
 const WebScreen: React.FC = () => {
     const searchParams = useLocalSearchParams();

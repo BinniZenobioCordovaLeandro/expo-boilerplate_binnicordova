@@ -1,17 +1,27 @@
+import {MasonryFlashList} from "@shopify/flash-list";
+import {router} from "expo-router";
+import {useAtomValue, useSetAtom} from "jotai";
+import {useEffect} from "react";
+import {RefreshControl, TouchableOpacity, View} from "react-native";
 import {AppBar} from "@/components/AppBar/AppBar";
 import {Button} from "@/components/Button/Button";
 import {Icon} from "@/components/Icon/Icon";
 import {Text} from "@/components/Text/Text";
 import {PATHS} from "@/constants/routes";
 import {STRINGS} from "@/constants/strings";
-import {useCategories} from "@/hooks/useCategories";
 import type {Category} from "@/models/category";
+import {
+    categoriesAtom,
+    categoriesErrorAtom,
+    categoriesLoadingAtom,
+    favoriteCategoriesAtom,
+    favoritesLastUpdatedAtom,
+    fetchCategoriesAtom,
+    toggleFavoriteCategoryAtom,
+} from "@/stores/categoriesStore";
 import {styles} from "@/styles";
 import {theme} from "@/theme/colors";
 import {FONT_SIZE} from "@/theme/fonts";
-import {MasonryFlashList} from "@shopify/flash-list";
-import {router} from "expo-router";
-import {RefreshControl, TouchableOpacity, View} from "react-native";
 
 const ESTIMATED_ITEM_SIZE = 50;
 const COLUMNS = 2;
@@ -23,8 +33,19 @@ type ItemProps = {
 
 const HomeScreen = () => {
     const {text, background, accent} = theme();
-    const {categories, loading, error, toggleFavoriteCategory, refresh} =
-        useCategories();
+
+    const categories = useAtomValue(categoriesAtom);
+    const favoriteCategories = useAtomValue(favoriteCategoriesAtom);
+    const favoritesLastUpdated = useAtomValue(favoritesLastUpdatedAtom);
+    const loading = useAtomValue(categoriesLoadingAtom);
+    const error = useAtomValue(categoriesErrorAtom);
+    const fetchCategories = useSetAtom(fetchCategoriesAtom);
+    const toggleFavoriteCategory = useSetAtom(toggleFavoriteCategoryAtom);
+
+    useEffect(() => {
+        console.log("Fetching categories...");
+        fetchCategories();
+    }, [fetchCategories]);
 
     const skip = () =>
         router.push(
@@ -33,6 +54,8 @@ const HomeScreen = () => {
                 "Binni Cordova"
             )
         );
+
+    const onContinue = async () => router.push(PATHS.NEWS);
 
     const emptyList: React.FC = () => (
         <Text type={error ? "error" : "default"} style={styles.informationText}>
@@ -47,7 +70,7 @@ const HomeScreen = () => {
                 actions={() => (
                     <TouchableOpacity onPress={skip}>
                         <Text type="label">
-                            Skip
+                            See author, Binni Cordova, on LinkedIn
                             <Icon
                                 name="chevron-double-right"
                                 size={FONT_SIZE[3]}
@@ -69,8 +92,9 @@ const HomeScreen = () => {
     );
 
     const renderItem = ({item, index}: ItemProps) => {
-        const backgroundColor = item.isFavorite ? accent : background;
-        const color = item.isFavorite ? background : text;
+        const isFavorite = favoriteCategories.includes(item.name);
+        const backgroundColor = isFavorite ? accent : background;
+        const color = isFavorite ? background : text;
         return (
             <TouchableOpacity
                 onPress={() => toggleFavoriteCategory(item)}
@@ -90,7 +114,7 @@ const HomeScreen = () => {
     const footer: React.FC = () => (
         <View style={styles.body}>
             <Text type="caption">{STRINGS.home.conditions}</Text>
-            <Button title={STRINGS.home.action} onPress={skip} />
+            <Button title={STRINGS.home.action} onPress={onContinue} />
         </View>
     );
 
@@ -104,17 +128,19 @@ const HomeScreen = () => {
                     tintColor={text}
                     titleColor={text}
                     progressBackgroundColor={background}
-                    onRefresh={refresh}
+                    onRefresh={fetchCategories}
                 />
             }
             data={categories}
             renderItem={renderItem}
+            extraData={favoritesLastUpdated}
             keyExtractor={(item: Category) => item.name}
             numColumns={COLUMNS}
             estimatedItemSize={ESTIMATED_ITEM_SIZE}
             ListHeaderComponent={header}
             ListEmptyComponent={emptyList}
             ListFooterComponent={footer}
+            contentContainerStyle={styles.safeArea}
         />
     );
 };

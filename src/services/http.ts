@@ -1,5 +1,5 @@
-import {type NestedRecord, cacheKey, getCache, setCache} from "@/utils/cache";
 import {type FetchRequestInit, fetch} from "expo/fetch";
+import {cacheKey, getCache, setCache} from "@/utils/cache";
 
 const baseHeaders = {
     Acept: "application/json",
@@ -13,19 +13,16 @@ const METHOD = {
 };
 
 type Http = {
-    get: (
-        url: string,
-        headers?: Record<string, string>
-    ) => Promise<NestedRecord>;
-    post: (
+    get: <T>(url: string, headers?: Record<string, string>) => Promise<T>;
+    post: <T>(
         url: string,
         body: Record<string, unknown> | Record<string, unknown>[],
         headers?: Record<string, string>
-    ) => Promise<NestedRecord>;
+    ) => Promise<T>;
 };
 
 export const http: Http = {
-    get: async (url, headers = {}): Promise<NestedRecord> => {
+    get: async <T>(url: string, headers = {}): Promise<T> => {
         const key = cacheKey(url, METHOD.GET);
 
         const options: FetchRequestInit = {
@@ -37,15 +34,19 @@ export const http: Http = {
         };
         const res = await fetch(url, options);
         if (res.status < 200 || res.status >= 300) {
-            const cachedData = await getCache(key);
+            const cachedData = await getCache<T>(key);
             if (cachedData) return cachedData;
             throw new Error();
         }
         const data = await res.json();
-        setCache(key, data);
-        return data;
+        setCache<T>(key, data);
+        return data as T;
     },
-    post: async (url, body, headers = {}): Promise<NestedRecord> => {
+    post: async <T>(
+        url: string,
+        body: Record<string, unknown> | Record<string, unknown>[],
+        headers = {}
+    ): Promise<T> => {
         const options: FetchRequestInit = {
             method: "POST",
             headers: {
@@ -59,6 +60,6 @@ export const http: Http = {
             throw new Error();
         }
         const data = await res.json();
-        return data;
+        return data as T;
     },
 };

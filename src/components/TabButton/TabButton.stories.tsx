@@ -1,8 +1,7 @@
-import {SPACING} from "@/theme/spacing";
 import {action} from "@storybook/addon-actions";
 import type {Meta, StoryObj} from "@storybook/react";
-import React from "react";
 import {View} from "react-native";
+import {SPACING} from "@/theme/spacing";
 import {TabButton} from "./TabButton";
 
 const meta = {

@@ -1,6 +1,6 @@
+import {StyleSheet} from "react-native";
 import {FONT_SIZE, LINE_HEIGHT} from "@/theme/fonts";
 import {OPACITY} from "@/theme/opcacity";
-import {StyleSheet} from "react-native";
 
 export const styles = StyleSheet.create({
     default: {
@@ -13,13 +13,13 @@ export const styles = StyleSheet.create({
         lineHeight: LINE_HEIGHT[4],
     },
     subtitle: {
-		fontSize: FONT_SIZE[3],
-		fontWeight: "bold",
-	},
-	link: {
-		fontSize: FONT_SIZE[2],
+        fontSize: FONT_SIZE[3],
+        fontWeight: "bold",
+    },
+    link: {
+        fontSize: FONT_SIZE[2],
         textDecorationLine: "underline",
-	},
+    },
     caption: {
         fontSize: FONT_SIZE[2],
         opacity: OPACITY[1],

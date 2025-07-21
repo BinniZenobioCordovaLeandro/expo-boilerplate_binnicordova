@@ -1,5 +1,3 @@
-import {Appearance, useColorScheme} from "react-native";
-
 type ThemeType = "light" | "dark";
 
 type ColorScheme = {
@@ -31,6 +29,5 @@ const Colors: Record<ThemeType, ColorScheme> = {
 };
 
 export const theme = (theme?: ThemeType): ColorScheme => {
-    const colorScheme = Appearance.getColorScheme();
-    return Colors[colorScheme || theme || "light"];
+    return Colors[theme || "light"];
 };

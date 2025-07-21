@@ -1,10 +1,9 @@
-import {theme} from "@/theme/colors";
-import React from "react";
 import {
     type ButtonProps as RNButtonProps,
     Text,
     TouchableOpacity,
 } from "react-native";
+import {theme} from "@/theme/colors";
 import {styles} from "./Button.styles";
 
 export type ButtonProps = RNButtonProps;

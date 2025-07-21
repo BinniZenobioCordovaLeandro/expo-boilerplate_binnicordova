@@ -1,25 +1,19 @@
-import {fetchArticlesTask} from "@/tasks";
-import * as BackgroundFetch from "expo-background-fetch";
+import * as BackgroundTask from "expo-background-task";
 import * as TaskManager from "expo-task-manager";
-import {useEffect} from "react";
+import {fetchArticlesTask, notifyMatchHits, TASKS} from "@/tasks";
 
-const TASK_INTERVAL = 30 * 60;
-const TASK_CONFIGURATION: BackgroundFetch.BackgroundFetchOptions = {
+const TASK_INTERVAL = 60 * 60 * 24;
+const TASK_CONFIGURATION: BackgroundTask.BackgroundTaskOptions = {
     minimumInterval: TASK_INTERVAL,
-    stopOnTerminate: false,
-    startOnBoot: true,
 };
 
-const BACKGROUND_FETCH_ARTICLES_TASK = "background-fetch-articles-task";
-TaskManager.defineTask(BACKGROUND_FETCH_ARTICLES_TASK, fetchArticlesTask);
+TaskManager.defineTask(TASKS.FETCH_ARTICLES, fetchArticlesTask);
+TaskManager.defineTask(TASKS.NOTIFY_MATCH_HITS, notifyMatchHits);
 
-export const useBackgroundFetch = () => {
-    useEffect(() => {
-        BackgroundFetch.registerTaskAsync(
-            BACKGROUND_FETCH_ARTICLES_TASK,
-            TASK_CONFIGURATION
-        );
-    }, []);
-
-    return {};
+export const initBackgroundFetch = async () => {
+    BackgroundTask.registerTaskAsync(TASKS.FETCH_ARTICLES, TASK_CONFIGURATION);
+    BackgroundTask.registerTaskAsync(
+        TASKS.NOTIFY_MATCH_HITS,
+        TASK_CONFIGURATION
+    );
 };
