@@ -1,9 +1,10 @@
+import "dotenv/config";
 import type {ExpoConfig} from "@expo/config-types";
 
 const EAS_SLUG = "expo-boilerplate";
 const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID;
 
-const VERSION = "0.0.1";
+const VERSION = "0.0.2";
 const VERSION_CODE = 1;
 
 const APP_VARIANTS = {

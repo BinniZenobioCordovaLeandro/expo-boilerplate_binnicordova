@@ -1,7 +1,7 @@
+import {StyleSheet} from "react-native";
 import {RADIUS} from "@/theme/border";
 import {FONT_FAMILY, FONT_SIZE} from "@/theme/fonts";
 import {SPACING} from "@/theme/spacing";
-import {StyleSheet} from "react-native";
 
 const BUTTON_HEIGHT = 48;
 

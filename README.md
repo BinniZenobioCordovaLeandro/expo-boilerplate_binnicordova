@@ -3,7 +3,7 @@
 # Expo React Native Boilerplate
 
 Boilerplate created by Binni Cordova  
-[@binnicordova](https://github.com/binnicordova)
+[@binnicordova](https://github.com/BinniZenobioCordovaLeandro)
 
 ---
 
@@ -50,6 +50,7 @@ CI/CD and pre-commit hooks ensure code is tested before each commit.
 
 ```sh
 pnpm run test
+pnpm run test:coverage
 ```
 
 ---
@@ -141,6 +142,50 @@ Located in `.github/pull_request_template.md` to keep PRs clean and consistent.
 Tasks and TODOs are tracked using annotations and VSCode’s TODO Tree extension:
 
 [TODO Tree Extension](https://marketplace.visualstudio.com/items?itemName=Gruntfuggly.todo-tree)
+
+---
+
+## 🏗️ Architecture & Structure
+
+This boilerplate follows a *screaming architecture* approach—organizing files by feature/domain so the code structure immediately reflects app functionality.
+
+```text
+src/
+├── AppEntry.tsx            # App entrypoint and router init
+├── app/                    # Screen components (expo-router)
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   ├── news.tsx
+│   └── web.tsx
+├── components/             # Reusable UI components (Button, Text, etc.)
+│   ├── AppBar/
+│   ├── Button/
+│   ├── Icon/
+│   ├── TabButton/
+│   └── Text/
+├── constants/              # App-wide constants (routes, strings, storage keys)
+├── hooks/                  # Custom React hooks (useNotification, useBackgroundFetch)
+├── models/                 # Data models and types (Article, Category)
+├── services/               # API and mocks (api.ts, mocks)
+├── tasks/                  # Background tasks registration
+├── theme/                  # Theming (colors, fonts, spacing)
+└── utils/                  # Utility functions (cache, matcher, storage)
+```
+> For larger component systems, consider design methodologies like **Atomic Design**, organizing your UI into Atoms, Molecules, Organisms, Templates, and Pages for scalable and maintainable component architecture.
+
+This layout makes it clear **what** your app does at a glance, keeping feature files co-located and reducing cross-folder noise.
+
+---
+
+## 🔄 Reset Project (Alternative)
+
+Want to instantly wipe the demo and start from a fresh scaffold? Use the `reset-project` script:
+
+```sh
+npm run reset-project
+```
+
+This interactive command will archive or remove example files under `project-example/` and generate a clean `src/app/index.tsx` with essential wiring in place.
 
 ---
 

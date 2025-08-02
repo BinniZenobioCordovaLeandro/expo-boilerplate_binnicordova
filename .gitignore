@@ -19,3 +19,8 @@ web-build/
 
 # jest
 coverage/
+
+# secrets
+.env
+.env.local
+*.env

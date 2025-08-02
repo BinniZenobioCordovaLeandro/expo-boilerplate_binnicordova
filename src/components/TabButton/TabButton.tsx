@@ -1,9 +1,9 @@
+import type {TabTriggerSlotProps} from "expo-router/ui";
+import {forwardRef, type Ref} from "react";
+import {Pressable, type View} from "react-native";
 import {Icon, type IconProps} from "@/components/Icon/Icon";
 import {theme} from "@/theme/colors";
 import {FONT_SIZE} from "@/theme/fonts";
-import type {TabTriggerSlotProps} from "expo-router/ui";
-import {type Ref, forwardRef} from "react";
-import {Pressable, type View} from "react-native";
 import {Text} from "../Text/Text";
 import {styles} from "./TabButton.styles";
 
@@ -13,10 +13,11 @@ export type TabButtonProps = TabTriggerSlotProps & {
 
 export const TabButton = forwardRef(
     ({icon, children, isFocused, ...props}: TabButtonProps, ref: Ref<View>) => {
+        const localRef = ref;
         const {lightness, text, background: backgroundColor, accent} = theme();
         return (
             <Pressable
-                ref={ref}
+                ref={localRef}
                 {...props}
                 style={[
                     styles.container,

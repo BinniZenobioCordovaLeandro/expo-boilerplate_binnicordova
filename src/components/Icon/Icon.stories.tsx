@@ -1,10 +1,9 @@
+import {action} from "@storybook/addon-actions";
+import type {Meta, StoryObj} from "@storybook/react";
+import {View} from "react-native";
 import {theme} from "@/theme/colors";
 import {FONT_SIZE} from "@/theme/fonts";
 import {SPACING} from "@/theme/spacing";
-import {action} from "@storybook/addon-actions";
-import type {Meta, StoryObj} from "@storybook/react";
-import React from "react";
-import {View} from "react-native";
 import {Icon} from "./Icon";
 
 const meta = {

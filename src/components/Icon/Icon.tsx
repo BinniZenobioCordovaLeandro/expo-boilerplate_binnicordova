@@ -1,10 +1,10 @@
-import {theme} from "@/theme/colors";
-import {FONT_SIZE} from "@/theme/fonts";
 import {
-    MaterialCommunityIcons as MaterialCommunityIconsType,
     createIconSet,
+    MaterialCommunityIcons as MaterialCommunityIconsType,
 } from "@expo/vector-icons";
 import type {ComponentProps} from "react";
+import {theme} from "@/theme/colors";
+import {FONT_SIZE} from "@/theme/fonts";
 
 const glyphMap = MaterialCommunityIconsType.glyphMap;
 

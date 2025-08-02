@@ -1,27 +1,28 @@
-import {Storage} from "./storage";
+import {storage} from "./storage";
 
-const localStorage = Storage;
-
-export type NestedRecord = {[key: string]: {[key: string]: string}};
+interface CacheEntry<T> {
+    data: T;
+    cacheCreatedAt: number;
+}
 
 export const cacheKey = (url: string, method: string) => `${method}:${url}`;
 
-export const setCache = (key: string, data: NestedRecord) => {
-    const cacheEntry = {
+export const setCache = <T>(key: string, data: T) => {
+    const cacheEntry: CacheEntry<T> = {
         data: data,
         cacheCreatedAt: Date.now(),
     };
-    localStorage.setItem(key, JSON.stringify(cacheEntry));
+    storage.setItem(key, cacheEntry);
 };
 
-export const getCache = async (key: string): Promise<NestedRecord | null> => {
-    const cacheEntry = await localStorage.getItem(key);
+export const getCache = async <T>(key: string): Promise<T | null> => {
+    const cacheEntry = await storage.getItem(key, null);
     if (!cacheEntry) return null;
 
-    const {data, cacheCreatedAt} = JSON.parse(cacheEntry);
+    const {data, cacheCreatedAt} = cacheEntry as CacheEntry<T>;
     return {
         ...data,
         cacheCreatedAt,
         getCacheAt: Date.now(),
-    };
+    } as T;
 };

@@ -5,21 +5,26 @@ on:
 
 permissions: write-all
 
-env:
-  EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
-
 jobs:
   preview:
     runs-on: ubuntu-latest
+    environment: ENV
+    env:
+      EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
     steps:
       - name: 🏗 Setup repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
       - name: 🏗 Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
-          cache: yarn
+          cache: pnpm
 
       - name: 🏗 Setup EAS
         uses: expo/expo-github-action@v8
@@ -28,7 +33,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📦 Install dependencies
-        run: yarn install
+        run: pnpm install
 
       - name: 🚀 Create preview
         uses: expo/expo-github-action/preview@v8

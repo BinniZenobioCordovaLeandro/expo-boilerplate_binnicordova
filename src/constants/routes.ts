@@ -1,11 +1,16 @@
-import type { Href } from "expo-router";
+import type {Href} from "expo-router";
 
-type Routes = "HOME" | "WEB";
+type WebPath = (uri: string, title: string) => Href;
 
-type PathsProps = Record<Routes, Href | ((...args: string[]) => Href)>;
+interface PathsProps {
+    HOME: Href;
+    NEWS: Href;
+    WEB: WebPath;
+}
 
 export const PATHS: PathsProps = {
     HOME: "/",
+    NEWS: "/news",
     WEB: (uri, title) =>
         `/web?uri=${encodeURIComponent(uri)}&title=${encodeURIComponent(title)}`,
 };

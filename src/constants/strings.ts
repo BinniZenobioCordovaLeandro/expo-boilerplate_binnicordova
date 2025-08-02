@@ -13,7 +13,8 @@ export const STRINGS = {
         title: "Expo Boilerplate",
         subtitle: "by @BinniCordova",
         message: "Select your favorite categories",
-        conditions: "By using this app, you agree to our terms and conditions.\n" ,
+        conditions:
+            "By using this app, you agree to our terms and conditions.\n",
         action: "Let's get started",
     },
     web: {

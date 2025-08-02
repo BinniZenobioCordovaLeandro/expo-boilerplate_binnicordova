@@ -1,8 +1,8 @@
-import {Text} from "@/components/Text/Text";
-import {FONT_SIZE} from "@/theme/fonts";
 import {Ionicons} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import {TouchableOpacity, View} from "react-native";
+import {Text} from "@/components/Text/Text";
+import {FONT_SIZE} from "@/theme/fonts";
 import {styles} from "./AppBar.styles";
 
 type AppBarProps = {

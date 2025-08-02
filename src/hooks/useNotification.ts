@@ -1,14 +1,13 @@
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import {router} from "expo-router";
+import {Alert, Linking} from "react-native";
 import {PATHS} from "@/constants/routes";
 import {STORAGE_ID} from "@/constants/storage";
 import {STRINGS} from "@/constants/strings";
 import {theme} from "@/theme/colors";
 import {scheduleLocalNotification} from "@/utils/notification";
-import {Storage} from "@/utils/storage";
-import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
-import {router} from "expo-router";
-import {useEffect, useState} from "react";
-import {Alert, Linking} from "react-native";
+import {storage} from "@/utils/storage";
 
 export const ANDROID_CHANNEL_ID = "default";
 const ANDROID_CONFIG = {
@@ -18,92 +17,84 @@ const ANDROID_CONFIG = {
     lightColor: theme().accent,
 };
 
-export function useNotifications() {
-    const [permissionStatus, setPermissionStatus] =
-        useState<Notifications.PermissionStatus>();
+const handleNotificationConfig = {
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+    shouldShowBanner: true,
+    shouldShowList: true,
+};
 
-    useEffect(() => {
-        if (
-            permissionStatus &&
-            permissionStatus !== Notifications.PermissionStatus.GRANTED
-        )
-            Alert.alert(
-                STRINGS.notification.alert_permission_title,
-                STRINGS.notification.alert_permission_message,
-                [
-                    {
-                        text: STRINGS.notification.alert_permission_button,
-                        onPress: () => Linking.openSettings(),
-                    },
-                ]
-            );
-    }, [permissionStatus]);
+export const initNotification = () => {
+    const registerForPushNotificationsAsync = async () => {
+        Notifications.setNotificationChannelAsync(
+            ANDROID_CHANNEL_ID,
+            ANDROID_CONFIG
+        );
 
-    useEffect(() => {
-        const registerForPushNotificationsAsync = async () => {
-            Notifications.setNotificationChannelAsync(
-                ANDROID_CHANNEL_ID,
-                ANDROID_CONFIG
-            );
+        const {status: existingStatus} =
+            await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== Notifications.PermissionStatus.GRANTED) {
+            const {status} = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
 
-            const {status: existingStatus} =
-                await Notifications.getPermissionsAsync();
-            let finalStatus = existingStatus;
-            if (existingStatus !== Notifications.PermissionStatus.GRANTED) {
-                const {status} = await Notifications.requestPermissionsAsync();
-                finalStatus = status;
-            }
-            setPermissionStatus(finalStatus);
-        };
-        const getToken = async (): Promise<string> => {
-            const projectId =
-                Constants?.expoConfig?.extra?.eas?.projectId ??
-                Constants?.easConfig?.projectId;
-            const token = (
-                await Notifications.getExpoPushTokenAsync({
-                    projectId,
-                })
-            ).data;
-            return token;
-        };
+        return finalStatus;
+    };
 
-        registerForPushNotificationsAsync()
-            .then(async () => {
-                const token = await getToken();
-                Storage.setItem(STORAGE_ID.notificationToken, token);
+    const getToken = async (): Promise<string> => {
+        const projectId =
+            Constants?.expoConfig?.extra?.eas?.projectId ??
+            Constants?.easConfig?.projectId;
+        const token = (
+            await Notifications.getExpoPushTokenAsync({
+                projectId,
             })
-            .then(() => {
-                Notifications.setNotificationHandler({
-                    handleNotification: async () => ({
-                        shouldShowAlert: true,
-                        shouldPlaySound: true,
-                        shouldSetBadge: false,
-                    }),
-                });
-                Notifications.addNotificationReceivedListener(
-                    (notification) => {
-                        const title =
-                            notification.request.content.body ||
-                            STRINGS.appName;
-                        const body =
-                            notification.request.content.data.body ||
-                            STRINGS.appName;
-                        const url = notification.request.content.data.url;
-                        scheduleLocalNotification(title, body, {url});
-                    }
-                );
-                Notifications.addNotificationResponseReceivedListener(
-                    (response) => {
-                        const title =
-                            response.notification.request.content.body ||
-                            STRINGS.appName;
-                        const url =
-                            response.notification.request.content.data.url;
-                        if (url) router.push(PATHS.WEB(url, title));
-                    }
-                );
-            });
-    }, []);
+        ).data;
+        return token;
+    };
 
-    return {permissionStatus};
-}
+    registerForPushNotificationsAsync()
+        .then(async (finalStatus) => {
+            if (![Notifications.PermissionStatus.GRANTED].includes(finalStatus))
+                await Alert.alert(
+                    STRINGS.notification.alert_permission_title,
+                    STRINGS.notification.alert_permission_message,
+                    [
+                        {
+                            text: STRINGS.notification.alert_permission_button,
+                            onPress: () => Linking.openSettings(),
+                        },
+                    ]
+                );
+            return finalStatus;
+        })
+        .then(async () => {
+            const token = await getToken();
+            storage.setItem(STORAGE_ID.notificationToken, token);
+        })
+        .then(() => {
+            Notifications.setNotificationHandler({
+                handleNotification: async () => handleNotificationConfig,
+            });
+            Notifications.addNotificationReceivedListener((notification) => {
+                const title =
+                    notification.request.content.title || STRINGS.appName;
+                const body =
+                    notification.request.content.body || STRINGS.appName;
+                const url = notification.request.content.data.url as string;
+                scheduleLocalNotification(title, body as string, {url});
+            });
+            Notifications.addNotificationResponseReceivedListener(
+                (response) => {
+                    const title =
+                        response.notification.request.content.body ||
+                        STRINGS.appName;
+                    const url = response.notification.request.content.data
+                        .url as string;
+                    if (url) router.push(PATHS.WEB(url, title));
+                }
+            );
+        });
+};
