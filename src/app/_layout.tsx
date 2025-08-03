@@ -44,8 +44,12 @@ const RootLayout = () => {
 let AppEntryPoint = RootLayout;
 
 if (process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === "true") {
-    AppEntryPoint = require("../../.rnstorybook").default;
-    SplashScreen.hideAsync();
+    try {
+        AppEntryPoint = require("../../.rnstorybook").default;
+        SplashScreen.hideAsync();
+    } catch (error) {
+        console.warn("Storybook not available:", error);
+    }
 }
 
 export default AppEntryPoint;
