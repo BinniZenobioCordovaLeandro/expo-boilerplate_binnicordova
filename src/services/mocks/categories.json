@@ -1,10 +1,10 @@
 [
     {
-        "name": "react native",
+        "name": "react-native",
         "icon": "react"
     },
     {
-        "name": "Android",
+        "name": "android",
         "icon": "android"
     },
     {
@@ -20,7 +20,7 @@
         "icon": "language-javascript"
     },
     {
-        "name": "Python",
+        "name": "python",
         "icon": "language-python"
     },
     {
@@ -28,7 +28,7 @@
         "icon": "language-kotlin"
     },
     {
-        "name": "Swift",
+        "name": "swift",
         "icon": "language-swift"
     },
     {

@@ -43,7 +43,6 @@ const HomeScreen = () => {
     const toggleFavoriteCategory = useSetAtom(toggleFavoriteCategoryAtom);
 
     useEffect(() => {
-        console.log("Fetching categories...");
         fetchCategories();
     }, [fetchCategories]);
 

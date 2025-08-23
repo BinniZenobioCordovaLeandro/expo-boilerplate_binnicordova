@@ -1,7 +1,9 @@
 import {FlashList} from "@shopify/flash-list";
 import {router} from "expo-router";
 import {useAtomValue, useSetAtom} from "jotai";
-import {RefreshControl, TouchableOpacity, View} from "react-native";
+import {useEffect} from "react";
+import {RefreshControl} from "react-native";
+import {NewsListItem} from "@/components/NewsListItem/NewsListItem";
 import {Text} from "@/components/Text/Text";
 import {PATHS} from "@/constants/routes";
 import {STRINGS} from "@/constants/strings";
@@ -23,32 +25,17 @@ export default function NewsScreen() {
     const error = useAtomValue(articlesErrorAtom);
     const fetchArticles = useSetAtom(fetchArticlesAtom);
 
+    useEffect(() => {
+        fetchArticles();
+    }, [fetchArticles]);
+
     const renderItem = ({item}: {item: Article}) => (
-        <TouchableOpacity
-            style={styles.listItem}
+        <NewsListItem
+            item={item}
             onPress={() =>
                 router.push(PATHS.WEB(item.story_url, item.story_title))
             }
-        >
-            <Text type="link" numberOfLines={2}>
-                {item.story_title}
-            </Text>
-
-            {item.comment_text && (
-                <Text type="default" numberOfLines={2}>
-                    {item.comment_text.replace(/<[^>]*>/g, "")}
-                </Text>
-            )}
-
-            <View style={styles.metaContainer}>
-                <Text type="caption">
-                    By <Text type="label">{item.author}</Text>
-                </Text>
-                <Text type="caption">
-                    {item.created_at.toLocaleLowerCase()}
-                </Text>
-            </View>
-        </TouchableOpacity>
+        />
     );
 
     const emptyList: React.FC = () => (
@@ -72,7 +59,7 @@ export default function NewsScreen() {
             }
             data={articles}
             renderItem={renderItem}
-            estimatedItemSize={120}
+            estimatedItemSize={50}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.objectID}
             contentContainerStyle={styles.safeArea}
