@@ -1,6 +1,6 @@
 {
     "name": "expo-boilerplate",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "./src/AppEntry.tsx",
     "license": "MIT",
     "scripts": {
@@ -22,11 +22,18 @@
         "testFinal": "pnpx jest",
         "testCoverage": "jest --coverage",
         "updateSnapshots": "jest -u --coverage=false",
+        "format": "biome format --write",
         "format:check": "biome ci --diagnostic-level=error",
-        "format": "biome format --write --files-ignore-unknown=true && biome ci .",
+        "build:dev": "eas build --platform all --profile development",
+        "build:preview": "eas build --platform all --profile preview",
+        "build:prod": "eas build --platform all --profile production",
+        "update:dev": "eas update --branch development --message \"Development update - $(date '+%Y-%m-%d %H:%M')\"",
+        "update:preview": "eas update --branch preview --message \"Preview update - $(date '+%Y-%m-%d %H:%M')\"",
+        "update:prod": "eas update --branch production --message \"Production update - $(date '+%Y-%m-%d %H:%M')\"",
         "eas-preview": "eas build --platform android --profile preview",
         "types": "tsc --noEmit --skipLibCheck",
         "reset-project": "node ./scripts/reset-project.js",
+        "generate:branding": "node ./scripts/generate-branding.js",
         "prepare": "husky",
         "precheck": "lint-staged"
     },
@@ -129,5 +136,12 @@
             "jest --coverage --bail --findRelatedTests --passWithNoTests"
         ]
     },
-    "private": true
+    "private": true,
+    "expo": {
+        "doctor": {
+            "reactNativeDirectoryCheck": {
+                "listUnknownPackages": false
+            }
+        }
+    }
 }

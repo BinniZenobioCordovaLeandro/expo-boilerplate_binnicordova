@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
         paddingBottom: insets.bottom,
     },
     baseLayer: {
-        paddingTop: insets.top - SPACING[10],
         flex: 1,
     },
     centerLayer: {

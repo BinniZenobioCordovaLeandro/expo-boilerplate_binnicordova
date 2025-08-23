@@ -20,7 +20,7 @@ const WebScreen: React.FC = () => {
     }
 
     return (
-        <View style={styles.baseLayer}>
+        <View style={[styles.safeArea, styles.baseLayer]}>
             <AppBar title={title} />
             <WebView source={{uri}} />
         </View>
