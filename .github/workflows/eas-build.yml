@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ENV
     env:
+      EAS_OWNER: ${{ secrets.EAS_OWNER }}
       EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
     steps:
       - name: 🏗 Setup repo

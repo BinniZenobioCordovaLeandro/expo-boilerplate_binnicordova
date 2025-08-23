@@ -13,6 +13,7 @@ const root = process.cwd();
 const oldPaths = [
     "src/app/news.tsx",
     "src/components/TabButton",
+    "src/components/NewsListItem",
     "src/models/article.ts",
     "src/models/category.ts",
     "src/services/api.ts",
@@ -32,6 +33,15 @@ console.log(`
 Feel free to use my incredible Expo Boilerplate and contact me to support your ideas or projects.
 Let me help you reset this project to a clean state, with a minimal setup, so:
 `);
+
+// Content for .env.example file
+const envExampleContent = `EXPO_PUBLIC_STORYBOOK_ENABLED=false
+
+# Publish it to GITHUB Actions secrets
+EAS_OWNER=your_eas_owner_here
+EAS_PROJECT_ID=your_eas_project_id_here
+EXPO_TOKEN=your_expo_token_here
+`;
 
 // Import centerLayer style from src/styles/index.tsx
 const indexContent = `import {router} from "expo-router";
@@ -202,6 +212,13 @@ async function moveOrDelete(userInput) {
             stringsContent
         );
         console.log("📝  Updated: src/constants/strings.ts");
+
+        // Create .env.example file
+        await fs.promises.writeFile(
+            path.join(root, ".env.example"),
+            envExampleContent
+        );
+        console.log("📝  Created: .env.example");
 
         console.log("\n✅  Project reset complete!");
         if (userInput === "y")
