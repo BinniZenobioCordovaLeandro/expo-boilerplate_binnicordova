@@ -6,6 +6,9 @@
     - assets/adaptive-icon.png (1024x1024, transparent bg)
     - assets/splash.png (1284x2778)
     - assets/favicon.png (64x64)
+    - resources/app-icon.png (512x512)
+    - resources/feature-graphic.png (1024x500)
+    - resources/privacy-policy.html to PlayStore/AppStore
 */
 const fs = require("fs");
 const path = require("path");

@@ -22,7 +22,7 @@
         "testFinal": "pnpx jest",
         "testCoverage": "jest --coverage",
         "updateSnapshots": "jest -u --coverage=false",
-        "format": "biome format --write",
+        "format": "biome format --write --files-ignore-unknown=true && biome ci .",
         "format:check": "biome ci --diagnostic-level=error",
         "build:dev": "eas build --platform all --profile development",
         "build:preview": "eas build --platform all --profile preview",

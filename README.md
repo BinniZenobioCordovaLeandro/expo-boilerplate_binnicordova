@@ -14,7 +14,18 @@ It comes pre-configured with essential tools for development, testing, formattin
 
 ## 🚀 Getting Started
 
-Clone the repo and install dependencies:
+### 🎸 Are you ready to rock? Check out my expo boilerplate!
+
+``` sh
+pnpx create-expo --template https://github.com/BinniZenobioCordovaLeandro/expo-boilerplate_binnicordova
+```
+
+Feel free to reach out to me if you have any questions or need support.
++1 (650) 374-4225 and ask for BinniCordova
+
+---
+
+Then install the dependencies manually:
 
 ```sh
 pnpm install
@@ -190,3 +201,81 @@ This interactive command will archive or remove example files under `project-exa
 ---
 
 This boilerplate is designed to help you kickstart your next Expo + React Native project with a solid foundation and best practices out of the box.
+
+---
+
+## 🎨 Branding Automation
+
+Easily update your app's branding (icons, splash screens, etc.) using the provided script:
+
+```sh
+pnpm run generate-branding
+```
+
+This will run `scripts/generate-branding.js` to automatically generate and apply branding assets. Customize the script or assets in the `assets/` folder as needed.
+
+---
+
+## 🚀 Publishing to App Store & Play Store
+
+This boilerplate is ready for EAS Build and store submission.
+
+### 1. Build your app
+
+```sh
+pnpm run eas-build --platform ios    # For App Store
+pnpm run eas-build --platform android # For Play Store
+```
+
+Or use Expo CLI directly:
+
+```sh
+npx eas build --platform ios
+npx eas build --platform android
+```
+
+### 2. Submit to the stores
+
+Load manually the .ipa file to AppStore
+and .aab to Play Store
+
+or, optionally:
+
+setup app.config.ts to auto-submit your app:
+(it is not mandatory if you will use expo updates after the first publish)
+
+- [Submit to App Store](https://docs.expo.dev/submit/ios/)
+- [Submit to Play Store](https://docs.expo.dev/submit/android/)
+
+You can also use EAS Submit:
+
+```sh
+npx eas submit --platform ios
+npx eas submit --platform android
+```
+
+### 3. Remotely update your app after publishing
+
+Once your app is published, you can push updates to users instantly (without resubmitting to the stores) using EAS Update:
+
+```sh
+pnpm run update:dev     # Push update to development branch
+pnpm run update:preview # Push update to preview branch
+pnpm run update:prod    # Push update to production branch
+```
+
+---
+
+# By Binni Cordova
+
+## 📬 Connect with Binni Cordova
+
+PortFolio
+- [binnicordova.com](https://binnicordova.com)
+
+Contact him:
+- [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-%230072b1?logo=linkedin)](https://www.linkedin.com/in/binni-cordova-a77000175/)
+- [![Calendar](https://img.shields.io/badge/Calendar-Book%20a%20Meeting-%23FF7F50?logo=google-calendar)](https://calendly.com/binnizenobiocordovaleandro/meet)
+- [![GitHub](https://img.shields.io/badge/GitHub-Profile-%23808080?logo=github)](https://github.com/binnizenobiocordovaleandro)
+- [![Email](https://img.shields.io/badge/Email-Send%20Mail-%23FF5722?logo=gmail)](mailto:binnizenobiocordovaleandro@gmail.com)
+- [![Phone](https://img.shields.io/badge/Phone-Call-%234CAF50?logo=phone)](tel:+1-650-374-4225)
